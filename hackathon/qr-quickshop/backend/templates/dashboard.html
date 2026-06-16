@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - QR QuickShop{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>📋 Menu</h2>
+    <ul>
+      <li><a href="/dashboard">🏠 Dashboard</a></li>
+      <li><a href="/catalogue">🛍️ Catalogue</a></li>
+      <li><a href="/favourites">⭐ Favourites</a></li>
+      <li><a href="/cart">🛒 Cart</a></li>
+      <li><a href="/logout">🚪 Logout</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <h1>Welcome, {{ session['user'] }} 👋</h1>
+    <h2>Your Orders</h2>
+    <div id="ordersContainer" class="orders-grid"></div>
+  </main>
+</div>
+
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+
+<style>
+.dashboard-container {
+  display: flex;
+  min-height: 90vh;
+  background: #f6f7fb;
+}
+.sidebar {
+  width: 220px;
+  background: #111827;
+  color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+}
+.sidebar h2 { margin-bottom: 15px; color: #facc15; }
+.sidebar ul { list-style: none; padding: 0; }
+.sidebar li { margin: 12px 0; }
+.sidebar a {
+  text-decoration: none;
+  color: #e5e7eb;
+  transition: color 0.3s;
+}
+.sidebar a:hover { color: #10b981; }
+
+.main-content {
+  flex: 1;
+  padding: 20px 40px;
+}
+.orders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+.order-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.order-card h3 { margin-bottom: 10px; }
+.status {
+  font-weight: bold;
+}
+.status.pending { color: orange; }
+.status.completed { color: green; }
+</style>
+{% endblock %}

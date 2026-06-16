@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Login / Register - QR QuickShop{% endblock %}
+{% block content %}
+  <h1>🔐 Login / Register</h1>
+
+  <div class="form-box">
+    <form id="authForm" onsubmit="return handleAuth(event)">
+      <label>Full Name:</label>
+      <input type="text" id="name" placeholder="Enter your full name" required><br>
+
+      <label>Email:</label>
+      <input type="email" id="email" placeholder="Enter your email" required><br>
+
+      <label>Mobile No:</label>
+      <input type="text" id="mobile" placeholder="Enter your 10-digit number" required><br>
+
+      <label>Password:</label>
+      <input type="password" id="password" onkeyup="checkPasswordStrength()" placeholder="Enter password" required><br>
+      <div id="strengthMessage"></div>
+
+      <label>Role:</label>
+      <select id="role">
+        <option value="customer">Customer</option>
+        <option value="worker">Mart Worker</option>
+      </select><br><br>
+
+      <button type="submit" class="checkout-btn">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    async function handleAuth(e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const mobile = document.getElementById("mobile").value.trim();
+      const password = document.getElementById("password").value;
+      const role = document.getElementById("role").value;
+
+      // ✅ validation regex
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const mobileRegex = /^[6-9]\d{9}$/;
+
+      if (name.length < 3) { alert("Name must be at least 3 characters."); return false; }
+      if (!emailRegex.test(email)) { alert("Enter a valid email."); return false; }
+      if (!mobileRegex.test(mobile)) { alert("Enter a valid 10-digit mobile number."); return false; }
+      if (password.length < 6) { alert("Password must be at least 6 characters."); return false; }
+
+      try {
+        const res = await fetch("/auth", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, mobile, password, role })
+        });
+
+        const data = await res.json();
+        alert(data.message);
+
+        // ✅ Correct redirection logic
+        if (data.redirect) {
+          if (role === "customer") {
+            window.location.href = "/";  // home page
+          } else if (role === "worker") {
+            window.location.href = "/mart-dashboard"; // mart worker dashboard
+          } else {
+            window.location.href = data.redirect; // fallback
+          }
+        }
+      } catch (err) {
+        console.error("Auth error:", err);
+        alert("Something went wrong. Please try again.");
+      }
+      return true;
+    }
+
+    // ✅ Password strength indicator
+    function checkPasswordStrength() {
+      const pwd = document.getElementById("password").value;
+      const strengthMessage = document.getElementById("strengthMessage");
+
+      let strength = 0;
+      if (pwd.length >= 6) strength++;
+      if (/[A-Z]/.test(pwd)) strength++;
+      if (/[0-9]/.test(pwd)) strength++;
+      if (/[@$!%*?&]/.test(pwd)) strength++;
+
+      let msg = "";
+      let color = "red";
+
+      if (strength <= 1) { msg = "Weak 🔴"; color = "red"; }
+      else if (strength === 2) { msg = "Moderate 🟡"; color = "orange"; }
+      else if (strength >= 3) { msg = "Strong 🟢"; color = "green"; }
+
+      strengthMessage.innerHTML = `<p style="color:${color};font-weight:bold;">${msg}</p>`;
+    }
+  </script>
+
+  <style>
+    .form-box {
+      background: white;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .form-box input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .checkout-btn {
+      background: #0077b6;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.3s;
+    }
+    .checkout-btn:hover {
+      background: #023e8a;
+    }
+  </style>
+{% endblock %}

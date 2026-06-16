@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Cart — QR QuickShop</title>
+</head>
+<body data-page="cart" class="bg-gray-50">
+  <nav class="bg-white shadow p-4">
+    <div class="max-w-5xl mx-auto flex justify-between items-center">
+      <div class="text-xl font-bold">🛒 QR QuickShop</div>
+      <div class="space-x-3">
+        <a href="/" class="px-3 py-1 rounded hover:bg-gray-100">Home</a>
+        <a href="/cart" class="px-3 py-1 rounded bg-indigo-600 text-white">Cart</a>
+        <a href="/checkout" class="px-3 py-1 rounded hover:bg-gray-100">Checkout</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-4xl mx-auto p-6">
+    <h1 class="text-2xl font-semibold mb-4">Your Cart</h1>
+    <div id="cartList" class="bg-white p-4 rounded shadow"></div>
+    <div id="cartFooter" class="mt-4"></div>
+  </main>
+
+  <script src="/static/js/script.js"></script>
+</body>
+</html>

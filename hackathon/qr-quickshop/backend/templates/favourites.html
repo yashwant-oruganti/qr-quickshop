@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}⭐ Favourites - QR QuickShop{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <h2>⭐ Favourites</h2>
+    <ul>
+      <li><a href="/">🏠 Home</a></li>
+      <li><a href="/dashboard">📦 Dashboard</a></li>
+      <li><a href="/cart">🛒 Cart</a></li>
+      <li><a href="/logout">🚪 Logout</a></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <h1>Your Favourite Products ❤️</h1>
+    <div class="store" id="favItems"></div>
+  </main>
+</div>
+
+<script>
+async function loadFavourites() {
+  const res = await fetch("/favourites/data");
+  const favs = await res.json();
+  const container = document.getElementById("favItems");
+
+  if (favs.length === 0) {
+    container.innerHTML = "<p>No favourites added yet ❤️</p>";
+  } else {
+    container.innerHTML = favs.map(i => `
+      <div class="card">
+        <img src="${i.img || '/static/images/default.png'}" alt="${i.name}">
+        <h3>${i.name}</h3>
+        <p>₹${i.price}</p>
+        <div class="btn-group">
+          <button class="btn-cart" onclick="moveToCart('${i.name}')">🛒 Move to Cart</button>
+          <button class="btn-remove" onclick="removeFavourite('${i.name}')">❌ Remove</button>
+        </div>
+      </div>
+    `).join("");
+  }
+}
+
+async function removeFavourite(itemName) {
+  await fetch("/remove_favourite", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ item: itemName })
+  });
+  loadFavourites();
+}
+
+async function moveToCart(itemName) {
+  await fetch("/move_to_cart", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ item: itemName })
+  });
+  alert(itemName + " moved to cart 🛒");
+  loadFavourites();
+}
+
+loadFavourites();
+</script>
+
+<style>
+.dashboard-container {
+  display: flex;
+  min-height: 90vh;
+  background: #f6f7fb;
+}
+.sidebar {
+  width: 220px;
+  background: #111827;
+  color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+}
+.sidebar h2 { margin-bottom: 15px; color: #facc15; }
+.sidebar ul { list-style: none; padding: 0; }
+.sidebar li { margin: 12px 0; }
+.sidebar a {
+  text-decoration: none;
+  color: #e5e7eb;
+  transition: color 0.3s;
+}
+.sidebar a:hover { color: #10b981; }
+.main-content {
+  flex: 1;
+  padding: 20px 40px;
+}
+.store {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.card img { max-width: 120px; margin-bottom: 10px; }
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.btn-cart {
+  background: #06d6a0;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.btn-remove {
+  background: #e63946;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+</style>
+{% endblock %}

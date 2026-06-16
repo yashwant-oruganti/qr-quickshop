@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>{{ message }}</h2>
+  <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+    {% for item in results %}
+      <div style="border:1px solid #ddd; border-radius:8px; padding:10px; width:180px; text-align:center; background:#fff;">
+        <img src="{{ item.img }}" alt="{{ item.name }}" style="width:100px;height:100px;object-fit:contain;">
+        <h3>{{ item.name }}</h3>
+        <p>₹{{ item.price }}</p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

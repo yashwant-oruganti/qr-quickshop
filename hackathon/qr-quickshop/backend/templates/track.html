@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Track Order - QR QuickShop{% endblock %}
+{% block content %}
+
+<div class="track-container">
+  <div class="track-card">
+    {% if delivered %}
+      <h2>Order Delivered 🎉</h2>
+      <p>Order ID: <b>{{ order_id }}</b> has been successfully delivered!</p>
+      <a href="/" class="btn-home">Back to Home</a>
+    {% else %}
+      <h2>Track Your Order</h2>
+      <p><b>Order ID:</b> {{ order.order_uid }}</p>
+      <p><b>Status:</b> 
+        {% if order.status == "Pending" %}
+          <span class="status-pending">Pending</span>
+        {% elif order.status == "Processing" %}
+          <span class="status-processing">Processing</span>
+        {% elif order.status == "Delivered" %}
+          <span class="status-delivered">Delivered</span>
+        {% endif %}
+      </p>
+
+      <h3>🛒 Order Details:</h3>
+      <ul class="order-list">
+        {% for item in items %}
+          <li>{{ item.name }} × {{ item.quantity }} = ₹{{ item.subtotal }}</li>
+        {% endfor %}
+      </ul>
+
+      <h3>💰 Total: ₹{{ order.total }}</h3>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+.track-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 85vh;
+  background: #f8fafc;
+}
+.track-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 500px;
+}
+.track-card h2 {
+  color: #2563eb;
+  margin-bottom: 15px;
+}
+.order-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+.order-list li {
+  background: #f1f5f9;
+  margin: 6px 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+.status-pending { color: #f59e0b; font-weight: bold; }
+.status-processing { color: #3b82f6; font-weight: bold; }
+.status-delivered { color: #16a34a; font-weight: bold; }
+.btn-home {
+  display: inline-block;
+  margin-top: 15px;
+  background: #2563eb;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+</style>
+
+{% endblock %}

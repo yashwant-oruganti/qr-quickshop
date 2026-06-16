@@ -1,0 +1,23 @@
+[
+    {
+        "name": "yash",
+        "email": "orugantiyashwantkumar@gmail.com",
+        "mobile": "6302882976",
+        "password": "asdfghjk",
+        "role": "worker"
+    },
+    {
+        "name": "DFG",
+        "email": "RAK@GMAIL.VCOM",
+        "mobile": "6302882976",
+        "password": "asdfghjk",
+        "role": "worker"
+    },
+    {
+        "name": "DFG",
+        "email": "RAKESH@GMAIL.COM",
+        "mobile": "6302882976",
+        "password": "asdfghjk",
+        "role": "worker"
+    }
+]
