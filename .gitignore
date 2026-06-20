@@ -1,0 +1,30 @@
+# Virtual Environments
+venv/
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# Database
+*.db
+
+# Environment
+.env
+
+# VS Code
+.vscode/
+
+# QR images
+static/qrcodes/
+
+# Build
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated QR files
+hackathon/qr-quickshop/backend/static/qrcodes/
