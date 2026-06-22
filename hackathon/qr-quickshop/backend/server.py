@@ -34,11 +34,14 @@ def home():
     return render_template("index.html")
 
 # ----------------------------
-# Get Items
+#REST END POINT (PRODUCTS)
 # ----------------------------
-@app.route("/items")
-def get_items():
-    return jsonify(store_items)
+@app.route("/api/products", methods=["GET"])
+def get_products():
+    return jsonify({
+	"success": True,
+	"count":len(store_items), 
+	"products": store_items})
 
 # ----------------------------
 # Search
